@@ -1,0 +1,3 @@
+#不提交包
+node_modules/
+dist/
