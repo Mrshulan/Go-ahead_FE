@@ -3,3 +3,10 @@ body {
   height: 100px;
   background: red;
 }
+#root {
+  width: 200px;
+  height: 200px;
+  background: url(../images/class.jpg) 0/100% no-repeat;
+  border-radius: 50%;
+  transform: translate3d(0,0,0,0)
+}
