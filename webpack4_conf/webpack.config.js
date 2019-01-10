@@ -58,8 +58,8 @@ module.exports = {
         removeCommments: true, // 移除注释
         // collapseWhitespace: true, // 压缩空白符和换行符
       },
-      // inlineSource: '.(js|css)' // 插入都html的css js文件都需要内联，既不是link script的形式引入
-      inject: true, // 是否注入内容到输出页面去 肯定是要链接哇
+      // inlineSource: '.(js|css)' // 插入都html的css js文件都需要内联，既不是link script的形式引入 需要安装 html-webpack-inline-source-plugin
+      inject: true, // 是否注入内容到输出页面body去 肯定是要链接哇
       // chunks: ['index'], // 指定插入某些模块 runtimeChunk这个就....
       hash: true, // 每次插入文件之后加上hash 用于处理缓存
     }),
