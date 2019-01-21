@@ -112,10 +112,14 @@
     obj.dom.events[obj.type].origin = obj.origin
   }
 
-
+  // 存储domReady事件
+  var domReadyEvents = []
   var Sl = function (str) {
-
-    return new Sl.prototype.init(str)
+    if(typeof str === 'function') {
+      domReadyEvents.push(str)
+    } else {
+      return new Sl.prototype.init(str)
+    }
   }
 
   // 封装一个静态的方法 实现for 类似Each
@@ -127,6 +131,55 @@
         break
       } else if (result === true) {
         continue
+      }
+    }
+  }
+
+  Sl.ajax = function (opt) {
+    opt.type = /post/i.test(opt.type) ? 'POST' : 'GET'
+    opt.async = opt.async === false ? false : true
+
+    var xhr = new XMLHttpRequest()
+    var data = ''
+
+    for(var key in opt.data) {
+      data += key + '=' + encodeURIComponent(opt.data[key]) + '&'
+    }
+
+    if(opt.type === 'GET') {
+      if(!/?&/.test(opt.url)) {
+        opt.url += '?'
+      } else {
+        if(!/(&\s*)$/.test(opt.url)) {
+          opt.url += '&'
+        }
+      }
+      // 避免缓存
+      opt.url += data + '&_=' + new Date().getTime()
+
+      data = null
+    }
+
+    xhr.open(opt.type, opt.url, opt.async)
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf8')
+    
+    xhr.onreadystatechange = function () {
+      if(this.readyState === 4) {
+        if(200 <= this.status && this.status < 300 || this.status === 304) {
+          opt.success && opt.success.call(this, strToJson(this.response))
+        } else {
+          opt.error && opt.error.call(this, this.status)
+        }
+      }
+    }
+
+    xhr.send(data)
+
+    function strToJson (str) {
+      try {
+        return JSON.parse(str)
+      } catch (e) {
+        return str
       }
     }
   }
@@ -815,6 +868,49 @@
   }
 
   Sl.prototype.init.prototype = Sl.prototype
+
+  ;(function (window) {
+    var done = false
+    var init = function() {
+      if(!done) {
+        done = true
+
+        Sl.Each(domReadyEvents, function (v) {
+          // domReady事件可以继续使用Sl库
+          v(Sl)
+        })
+
+        domReadyEvents.length = 0
+      }
+    }
+    // 监听dom结构
+    Sl(document).one('DOMContentLoaded', init)
+
+    // 兼容IE
+    f()
+    function f() {
+      try {
+        document.documentElement.doScroll()
+      } catch(e) {
+        setTimeout(f)
+        return 
+      }
+
+      init()
+    }
+
+    // 进一步确保
+    document.onreadystatechange = function () {
+      if(document.readyState === 'complete') {
+        document.onreadystatechange = null
+        init()
+      }
+    }
+    window.onload = function () {
+      window.onload = null
+      init()
+    }
+  })(window)
 
   window.$ = Sl
 })(window)
