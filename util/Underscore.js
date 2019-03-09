@@ -1,4 +1,4 @@
-(function () {
+;(function () {
   // 兼容浏览器/Node/Node vm(沙盒模块)/小程序 全局环境
   var root = (typeof self === 'object' && self.self === self && self ) ||
     (typeof global === 'object' && global.global === global && global) ||
