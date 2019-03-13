@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .container {
+      /* 确保中间内容可以显示出来，left宽+right宽+自己想想要显示的宽度 */
+      min-width: 600px;
+      text-align: center;
+      line-height: 400px;
+    }
+    .left {
+      float: left;
+      width: 200px;
+      height: 400px;
+      background: red;
+      margin-left: -100%;
+    }
+    .center {
+      float: left;
+      width: 100%;
+      height: 400px;
+      /* background-color: skyblue; */
+    }
+    .center .inner {
+      /* 关键点是 inner内部撑开 */
+      margin: 0 220px;
+      background-color: skyblue;
+      font-weight: 700;
+    }
+    .right {
+      float: left;
+      width: 200px;
+      height: 400px;
+      background-color: blue;
+      margin-left: -200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="center">
+      <!-- 多加一层 dom 树节点，增加渲染树生成的计算量 -->
+      <div class="inner">
+        双飞翼布局taobao
+      </div>
+    </div>
+    <div class="left">lefeAside</div>
+    <div class="right">rightAside</div>
+  </div>
+
+  <!-- 
+    两种布局方式都是把主列放在文档流最前面，使主列优先加载。
+    两种布局方式在实现上也有相同之处，都是让三列浮动，然后通过负外边距形成三列布局。
+    两种布局方式的不同之处在于如何处理中间主列的位置：
+    圣杯布局是利用父容器的左、右内边距(padding)+两个从列相对定位；
+    双飞翼布局是把主列嵌套在一个新的父级块中利用主列的左、右外边距(margin)进行布局调整 -->
+</body>
+</html>

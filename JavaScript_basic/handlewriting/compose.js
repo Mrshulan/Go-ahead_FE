@@ -11,6 +11,19 @@ function compose () {
     return result
   }
 }
+// // 利用reduce
+// function compose(...funcs) {
+//   if(funcs.length === 0) {
+//     return arg => arg
+//   }
+
+//   if(funcs.length === 1) {
+//     return funcs[0]
+//   }
+
+//   return funcs.reduce((a, b) => (...args) => a(b(...args)))
+// }
+
 
 // var toUpperCase = function(x) {return x.toUpperCase()}
 // var hello = function(x) {return 'Hello, ' + x}

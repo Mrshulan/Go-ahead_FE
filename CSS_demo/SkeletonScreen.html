@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .skeleton {
+      padding: 10px;
+    }
+    
+    .skeleton .skeleton-title,
+    .skeleton .skeleton-content{
+      background-color: rgb(194, 207, 214);
+      /* rgb(194, 207, 214)重复的相当于只是填充前面百分之25 后面透明处理 */
+      background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 25%,  rgb(194, 207, 214)25%);
+      background-size: 20rem 20rem;
+      transform-origin: left;
+    }
+    
+    @keyframes skeleton-stripes {
+      from{
+        background-position: 0 0;
+        tansform: scaleX(1);
+      }
+      to{
+        background-position: 20rem 0; /* 横着变化 这个background-size利用 */
+        transform: scaleX(.3);
+      }
+    }
+
+    .skeleton-head{
+      float: left;
+      width: 100px;
+      height: 100px;
+      background: rgb(194, 207, 214);
+      border-radius: 50%;
+    }
+
+    .skeleton-body{
+      margin-left: 110px;
+    }
+
+    .skeleton-title{
+      width: 500px;
+      height: 60px;
+      animation: skeleton-stripes 0.5s linear infinite alternate;
+    }
+    .skeleton-content{
+      width: 260px;
+      height: 30px;
+      margin-top: 10px;
+      animation: skeleton-stripes 0.5s .3s linear infinite alternate;
+    }
+  </style>
+</head>
+<body>
+  <div class="skeleton">
+    <!-- 两栏布局 -->
+    <div class="skeleton-head"></div>
+    <div class="skeleton-body">
+      <div class="skeleton-title"></div>
+      <div class="skeleton-content"></div>
+    </div>
+  </div>
+</body>
+</html>

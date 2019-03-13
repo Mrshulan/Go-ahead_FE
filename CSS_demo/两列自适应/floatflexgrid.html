@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .parent {
+      /* 设置overflow:hidden并不会触发IE6-浏览器的haslayout属性，
+      *  所以需要设置zoom:1来兼容IE6-浏览器 
+      */
+      overflow: hidden;
+      zoom: 1;
+      background-color: skyblue;
+    }
+
+    .left {
+      /* 父级的bfc顾住子集 */
+      /* float 和 margin结合两列布局 */
+      float: left;
+      margin-right: 20px;
+      background-color: blue;
+    }
+
+    .right {
+      /* 子集又形成一个bfc拉住大小 BFC不会重叠浮动元素 */
+      overflow: hidden;
+      zoom: 1;
+      background-color: aqua;
+    }
+
+    /* FLex*/
+    /* .parent {
+      display: flex;
+    }
+    .right {
+      margin-left: 20px;
+      flex: 1;
+    } */
+
+    
+  </style>
+</head>
+<body>
+  <!-- 普通的两列布局，浮动+普通元素的margin便可以实现，但如果是自适应的两列布局，利用float+overflow:hidden便可以实现 -->
+  <div class="parent">
+    <div class="left">
+      <p>left</p>
+    </div>
+    <!-- 自适应部分 -->
+    <div class="right">
+      <p>right自适应</p>
+    </div>
+  </div>
+  <!-- 如果侧边栏在右边时，注意渲染顺序。即在HTML中，先写侧边栏后写主内容 -->
+</body>
+</html>

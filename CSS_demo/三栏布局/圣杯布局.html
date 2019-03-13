@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .container {
+      overflow: hidden;
+      zoom: 1;
+      /* min-width: 600px; */
+      /* 通过设置父容器的padding-left和padding-right，让左右两边留出间隙 */ 
+      padding: 0 220px;
+      text-align: center;
+      line-height: 400px;
+    }
+    .left {
+      float: left;
+      width: 200px;
+      height: 400px;
+      background-color: aqua;
+      /* 通过设置margin-left为100% 让left和right部分回到与center内部 */
+      margin-left: -100%;
+      /* 通过设置相对定位，让left和right部分移动到两边 */
+      position: relative;
+      left: -220px;
+    }
+    .center {
+      float: left;
+      width: 100%;
+      height: 500px;
+      background-color: skyblue;
+    }
+
+    .right {
+      float: left;
+      width: 200px;
+      /* height: 400px; */
+      /* 用padding的背景填充结合margin负值达到伪等高 */
+      padding-bottom: 1000px;
+      margin-bottom: -1000px;
+      background-color: #f66;
+      margin-left: -200px;
+      position: relative;
+      right: -220px;
+      /* transform: translate(110%,0) */
+    }
+    .footer {
+      width: 100%;
+      height: 200px;
+      margin-top: 50px;
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+  <!-- 缺点：center部分的最小宽度不能小于left部分的宽度，否则会left部分掉到下一行 -->
+  <!-- 缺点: 如果其中一列内容高度拉长，其他两列的背景并不会自动填充。(借助伪等高布局可解决) -->
+  <div class="container">
+    <!-- dom优先渲染 -->
+    <div class="center">
+      <h2>圣杯布局</h2>
+    </div>
+    <!-- 挤到下一行 -->
+    <div class="left">leftAside</div>
+    <!-- 测试定位属性会占据文档流 -->
+    <div class="right">rightAside</div>
+  </div>
+   <!-- 用定位这里也会受到影响 -->
+  <div class="footer"></div>
+
+  <script>
+    // 事件不是根据你保留的文档流位置，而是看你现在的位置
+    var oLeft = document.getElementsByClassName("right")[0]
+  
+    oLeft.addEventListener("click", function () {
+      console.log(1)
+    })
+  </script>
+</body>
+</html>
