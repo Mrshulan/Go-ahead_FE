@@ -78,7 +78,7 @@ function Promise (excutor) {
  */
 Promise.prototype.then = function (onFulfilled, onRejected) {
   const that = this
-  let newPromsie
+  let newPromise
 
   // 处理参数默认值 保证参数后续能够继续执行
   // 如果类型不是函数需要忽略，同时也实现了透传
@@ -136,7 +136,7 @@ Promise.prototype.then = function (onFulfilled, onRejected) {
 
   if(that.status === PENDING) {
     // 当异步调用resolve/rejected时 将onFulfilled/onRejected收集暂存到集合中
-    return newPomise = new Promise((resolve, reject) => {
+    return newPromise = new Promise((resolve, reject) => {
       // resolve函数里边保持了that (似乎每次都是保持上一个， 而且队列只有一个而已)
       that.onFulfilledCallbacks.push((value) => {
         try{
@@ -292,9 +292,9 @@ Promise.reject = function (reason) {
 
  Promise.deferred = function () {
    let defer = {}
-   defer.promise = new Promise((resolve, reject) => {
-     defer.resolve = resovle
-     defer.reject = reject
+      defer.promise = new Promise((resolve, reject) => {
+      defer.resolve = resolve
+      defer.reject = reject
    })
   return defer
  }

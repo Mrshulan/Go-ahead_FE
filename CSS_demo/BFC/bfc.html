@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .left {
+      background: #73DE80;    /* 绿色 */
+      opacity: 0.5;
+      border: 3px solid #F31264;
+      width: 200px;
+      height: 200px;
+      float: left;
+    }
+    /* 
+    绿色框（'.left'）向左浮动，它创建了一个新BFC，但暂时不讨论它所创建的BFC。由于绿色框浮动了，它脱离了原本normal flow的位置，因此，粉色框（'#right'）就被定位到灰色父元素的左上角
+    （特性3：元素左边与容器左边相接触），与浮动绿色框发生了重叠。
+    同时，由于灰色框（'.box'）并没有创建BFC，因此在计算高度的时候，
+    并没有考虑绿色框的区域（特性6：浮动区域不叠加到BFC区域上），发生了高度坍塌，这也是常见问题之一。 */
+
+    .right{                        /* 粉色 */
+      background: #EF5BE2;
+      opacity: 0.5;
+      border: 3px solid #F31264;
+      width:400px; /* right不给直接自适应 */
+      min-height: 100px;
+    }
+    .box{
+      background:#888;
+      height: 100%;
+      margin-left: 50px;
+    }
+    /* 实例二overflow 把高度拉回去*/
+    .BFC {    
+      overflow: hidden;
+    }
+    /* 实例三: 由于粉色框没有创建新的BFC，因此粉色框中白色块受到了绿色框的影响，
+    被挤到了右边去了。先不管这个，看看白色块的margin。 */
+    .little{
+        background: #fff;
+        width: 50px;
+        height: 50px;
+        margin: 10px;
+        float: left;
+    }
+    /* 实例四 给right 也拉回去 
+    一旦粉色框创建了新的BFC以后，粉色框就不与绿色浮动框发生重叠了，
+    同时内部的白色块处于隔离的空间（特性4：BFC就是页面上的一个隔离的独立容器），
+    白色块也不会受到绿色浮动框的挤压。
+    */
+
+  </style>
+</head>
+<body>
+
+  <div class="box BFC">
+    <div class="left"></div>
+    <div class="right BFC">
+      <div class="little"></div>
+      <div class="little"></div>
+      <div class="little"></div>
+    </div>
+  </div>
+<!--   
+  BFC的创建方法（格式化上下文，三种定位方案）
+
+  根元素或其它包含它的元素；
+  浮动 (元素的float不为none)；
+  绝对定位元素 (元素的position为absolute或fixed)；
+  行内块inline-blocks(元素的 display: inline-block)；
+  表格单元格(元素的display: table-cell，HTML表格单元格默认属性)；
+  overflow的值不为visible的元素；
+  弹性盒 flex boxes (元素的display: flex或inline-flex)；
+  
+  但其中，最常见的就是
+  overflow:hidden、float:left/right、position:absolute。
+  也就是说，每次看到这些属性的时候，就代表了该元素以及创建了一个BFC了。 
+
+  MDN一个BFC包含创建该上下文元素的所有子元素，但不包括创建了新BFC的子元素的内部元素。
+-->
+
+<!-- 
+内部的盒会在垂直方向一个接一个排列（可以看作BFC中有一个的常规流）；
+处于同一个BFC中的元素相互影响，可能会发生margin collapse；
+每个元素的margin box的左边，与容器块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此；
+BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之亦然；
+计算BFC的高度时，考虑BFC所包含的所有元素，连浮动元素也参与计算；
+浮动盒区域不叠加到BFC上； 
+利用BFC可以闭合浮动（实例二），防止与浮动元素重叠（实例四）
+-->
+</body>
+</html>
