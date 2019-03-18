@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{padding: 0; margin: 0;}
+    .container{
+      width: 700px;
+      margin: 50px auto;
+    }
+    .lazyarea{
+      position: position;
+      width: 100%;
+    }
+    .lazy-area li{
+      position: relative;
+
+      width: 100%;
+      height: 500px;
+      list-style-type: none;
+      border: 1px solid blue;
+    }
+    .lazy-area li img{
+      position: absolute;
+      top:0;
+      left: 0;
+      object-fit: cover;
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <ul class="lazy-area">
+      <li><img data-src="./img/1.jpg" alt=""></li>
+      <li><img data-src="./img/2.jpg" alt=""></li>
+      <li><img data-src="./img/3.jpg" alt=""></li>
+      <li><img data-src="./img/4.jpg" alt=""></li>
+      <li><img data-src="./img/5.jpg" alt=""></li>
+      <li><img data-src="./img/6.jpg" alt=""></li>
+      <li><img data-src="./img/7.jpg" alt=""></li>
+      <li><img data-src="./img/8.jpg" alt=""></li>
+      <li><img data-src="./img/9.jpg" alt=""></li>
+      <li><img data-src="./img/10.jpg" alt=""></li>
+    </ul>
+  </div>
+  <script src="./lazyLoading.js"></script>
+</body>
+</html>

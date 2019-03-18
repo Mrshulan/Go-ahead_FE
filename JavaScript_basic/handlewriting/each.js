@@ -5,7 +5,7 @@ function each(obj, callback) {
     return typeof length === 'number' && length >= 0 && length <= MAX_ARRAY_INDEX
   }
 
-  if(AisArrayLike(obj)) {
+  if(isArrayLike(obj)) {
     length = obj.length
     for(; i < length;i++) {
       if(callback.call(obj[i], i, obj[i]) === false) {
