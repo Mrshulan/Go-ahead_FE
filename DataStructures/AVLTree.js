@@ -1,6 +1,6 @@
 class Node {
   constructor(key) {
-    this.key = null
+    this.key = key
     this.left = null
     this.right = null
   }
