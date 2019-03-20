@@ -51,6 +51,34 @@ class BinarySearchTree {
     inOrderTraverseNode(this.root, callback)
   }
 
+  inOrderTraverse2() {
+    const inOrderTraverseNode = (node) => {
+      const res = []
+      const stack = []
+
+      while(node || stack.length !== 0) {
+
+        // 取尽 left
+        while(root) {
+          stack.push(root)
+          root = root.left
+        }
+
+        if(stack.length) {
+          let p = stack[stack.length - 1]
+          res.push(p.key)
+          stack.pop()
+          // 之后开始移动 再取
+          root = p.right
+        }
+      }
+
+      return res
+    }
+
+    return inOrderTraverseNode(this.root)
+  }
+
   // 先序遍历
   preOrderTraverse(callback) {
     const preOrderTraverseNode = (node, callback) => {
@@ -64,6 +92,34 @@ class BinarySearchTree {
     preOrderTraverseNode(this.root, callback)
   }
 
+  preOrderTraverse2() {
+    const preOrderTraverseNode = (node) => {
+      const res = []
+      const stack = []
+
+      if(node != null) {
+        stack.push(node)
+      }
+
+      while(node || stack.length !== 0) {
+        var p = stack.pop()
+        res.push(p.key)
+
+        // 先放右边再放左边是因为取出来的顺序是相反的(栈)
+        if(p.right != null) {
+          stack.push(p.right)
+        }
+        if(p.left != null) {
+          stack.push(p.left)
+        }
+      }
+
+      return res
+    }
+
+    return preOrderTraverseNode(this.root)
+  }
+
   // 后序遍历
   postOrderTraverse(callback) {
     const postOrderTraverseNode = (node, callback) => {
@@ -75,6 +131,34 @@ class BinarySearchTree {
     }
 
     postOrderTraverseNode(this.root, callback)
+  }
+
+  postOrderTraverse2() {
+    const postOrderTraverse2 = (node) => {
+      const res = []
+      const stack = []
+
+      if(node != null) {
+        stack.push(node)
+      }
+
+      while(node || stack.length !== 0) {
+        var p = stack.pop()
+        res.push(p.key)
+
+        // 先左边后右边(栈)
+        if(p.left != null) {
+          stack.push(p.left)
+        }
+        if(p.right != null) {
+          stack.push(p.right)
+        }
+      }
+
+      return res.reverse()
+    }
+
+    return postOrderTraverse2(this.root)
   }
 
   min(node) {

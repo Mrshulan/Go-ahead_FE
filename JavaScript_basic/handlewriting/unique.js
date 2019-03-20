@@ -2,6 +2,16 @@ var array = [1, 1, '1', '1']
 
 
 function unique(array) {
+  for(var i = array.length - 1;i >= 0;i--) {
+    for(var j = i - 1;j >= 0;j--) {
+      if(array[j] === array) {
+        array.splice(j, 1)
+      }
+    }
+  }
+}
+
+function unique(array) {
   var res = []
 
   for(var i = 0,iL = array.length;i < iL;i++) {

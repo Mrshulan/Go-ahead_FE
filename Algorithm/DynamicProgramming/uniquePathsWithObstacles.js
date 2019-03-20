@@ -19,7 +19,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   dp[0][0] = 1
 
   for(let i = 0;i < obstacleGrid.length;i++) {
-    for(let j = 0;j < obstacleGrid[0].length;j++) {
+    for(let j = 0;j < obstacleGrid[i].length;j++) {
       // 自己就不考虑了
       if(!i && !j) continue
 
