@@ -29,3 +29,26 @@ fn("a", "b")("c") // ["a", "b", "c"]
 fn("a")("b")("c") // ["a", "b", "c"]
 fn("a")("b", "c")// ["a", "b", "c"]
 console.log(fn("a"))
+
+
+
+// 增强版 自己设置满足多少个传值作为标准
+function curry(fn, minArg) {  
+  if(minArg === undefined) minArg = 1
+
+  function f(fArg) {
+
+    return function() {
+      var arg = [].slice.call(arguments)
+      var newArg = fArg.concat(arg)
+
+      if(newArg.length >= minArg) {
+        return fn.apply(null, newArg)
+      } else {
+        return f(newArg)
+      }
+    }
+  }
+
+  return f([])
+}

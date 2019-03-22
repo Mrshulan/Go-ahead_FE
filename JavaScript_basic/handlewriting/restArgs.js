@@ -15,9 +15,9 @@ function restArgs (func, startIdnex) {
       rest[index] = arguments[index + startIndex]
     }
 
-    var arg = Array(startIndex + 1)
+    var args = Array(startIndex + 1)
     for(index = 0; index < startIndex + 1; i++) {
-      args = arguments[index]
+      args[index] = arguments[index]
     }
 
     // args [1, 2, [3, 4, 5]]
