@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="box">
+    <input type="text" :value="a">
+    <div :text='a'></div>
+    <span :text='a'></span>
+  </div>
+
+
+  <script>
+    function Vue(o) {
+      Vue.vm = this
+      this.el = document.getElementById(o.el.slice(1))
+      this.data = this.proxyData(o.data) // 返回一个proxy外套壳
+      this.init()
+
+      // 初始数据需要同步代理 触发双向绑定
+      for ( let k in o.data){
+        this.data[k] = o.data[k];
+      }
+    }
+
+    Vue.prototype = {
+      constructor: Vue,
+
+      // 初始化的 init this指向实例
+      init() {
+        let _ele = []
+        this._value = []
+        this._text = []
+
+        // this指向就像自执行了
+        element(this.el)
+        getEle.call(this, _ele)
+        changeValue(this._value)
+
+        // view触发方监听
+        function changeValue(el) {
+          for(var i = 0,len = el.length;i < len;i++) {
+            el[i].addEventListener('click', function () {
+              Vue.vm.data[this.getAttribute(':value')] = this.value
+            })
+          }
+        }
+
+        // 将符合绑定的节点分类 (需要修正this)
+        function getEle(ele) {
+          for(var i = 0,len = ele.length;i < len;i++) {
+            let attrS = ele[i].attributes
+
+            for(var j = 0,length = attrS.length;j < length;j++) {
+              var attr = attrS[j].nodeName
+
+              if(/^:/.test(attr)) {
+                this['_' + attr.slice(1)].push(ele[i])
+              }
+            }
+          }
+        }
+
+        // 添加el的所有子节点 
+        function element(el) {
+          let child = el.children
+
+          for(var i = 0,len = child.length;i < len;i++) {
+            _ele.push(child[i])
+            if(child[i].children.length !== 0) {
+              element(child[i])
+            }
+          }
+        }
+      }, 
+      proxyData(obj) {
+        return new Proxy(obj, {
+          set(target, key, value) {
+            // console.log(this); // 指向{set}这个对象
+            for(var i = 0,len = Vue.vm._value.lengtg;i < len;i++) {
+              if(Vue.vm._value[i].getAttribute(':value') === key){
+                Vue.vm._value[i].value = value;
+              }
+            }
+
+            for (var j = 0,len = Vue.vm._text.length;j < len;j++) {
+              if(Vue.vm._text[j].getAttribute(':text') === key){
+                Vue.vm._text[j].innerText = value;
+              }
+            }
+          }
+        })
+      }
+    }
+
+    console.log(new Vue({
+      el: '#box',
+      data: {
+        a: '初始数据需要同步代理'
+      }
+    }))
+  </script>
+</body>
+</html>
