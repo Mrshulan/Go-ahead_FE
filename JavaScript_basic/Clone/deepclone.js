@@ -20,11 +20,11 @@ function clone(source) {
       // 避免一层死循环
       target[i] = source[i] = source ? target : clone(source[i])
     }
-  } else if (type === '[object Object') {
+  } else if (type === '[object Object]') {
     target = {}
     for (let key in source) {
       if(source.hasOwnProperty(key)) {
-        target[key] = source[key] === source ? target : clone[source[key]]
+        target[key] = source[key] === source ? target : clone(source[key])
       }
     }
   } else {

@@ -79,7 +79,7 @@ Function.prototype.myBind = function (context) {
 
   fNOP.prototype = this.prototype
   fBound.prototype = new fNOP()
-  // fBound.prototype.constructor = this 可加可不加 instanceof 左侧取的是__proto__
+  // fBound.prototype.constructor = fNOP 可加可不加 instanceof 左侧取的是__proto__
   return fBound
 }
 
