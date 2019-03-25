@@ -59,9 +59,9 @@ class BinarySearchTree {
       while(node || stack.length !== 0) {
 
         // 取尽 left
-        while(root) {
-          stack.push(root)
-          root = root.left
+        while(node) {
+          stack.push(node)
+          node = node.left
         }
 
         if(stack.length) {
@@ -69,7 +69,7 @@ class BinarySearchTree {
           res.push(p.key)
           stack.pop()
           // 之后开始移动 再取
-          root = p.right
+          node = p.right
         }
       }
 
