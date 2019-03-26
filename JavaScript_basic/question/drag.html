@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>拖拽实现</title>
+  <style>
+    #box {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      background-color: grey;
+    }
+    .square {
+      position: absolute;
+      top: calc(50% - 50px);
+      left: calc(50% - 50px);
+      background-color: red;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <div class="square" id='square'>
+
+    </div>
+  </div>
+
+
+  <script>
+  var box = document.getElementById('box')
+  var square = document.getElementById('square')
+  
+  var boxWidth = box.clientWidth
+  var boxHeight = box.clientHeight
+  var squareWidth = square.clientWidth 
+  var squareHeight = square.clientHeight 
+
+  square.onmousedown = function(e) {
+    var goX = e.clientX,
+        goY = e.clientY,
+        goLeft = square.offsetLeft,
+        goTop = square.offsetTop;
+
+    this.onmousemove = function (e) {
+      var newLeft = e.clientX - goX + goLeft
+      var newTop =  e.clientY - goY + goTop
+
+      if(newLeft >= 0 && newLeft < boxWidth - squareWidth
+      && newTop >= 0 && newTop < boxHeight - squareHeight) {
+        this.style.left = newLeft + 'px'
+        this.style.top = newTop + 'px'
+      } else {
+        console.log("拖拽请不要出界")
+      }
+    }
+
+    this.onmouseup = function () {
+      this.onmousemove = null
+    }
+
+  }
+  </script>
+</body>
+</html>
