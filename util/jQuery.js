@@ -184,6 +184,78 @@
     }
   }
 
+  /* 
+  $.popups({
+    width: "300px",
+    height: "100px",
+    autoClose: true,
+    content: "成功"
+  }) 
+  */
+  Sl.popups = function (opt) {
+    var opt = opt ? opt : {}
+    opt.content = opt.content || "请设置弹窗消息"
+    opt.width = opt.width || 120
+    opt.height = opt.height || 50
+    opt.className = opt.className || "popups-style"
+    opt.autoClose = opt.autoClose !== undefined || false
+    opt.autoTime = opt.autoTime || 3000
+    opt.blankClose = opt.blankClose !== undefined || false
+
+    var popupsHtml = [
+      '<div class="popups-main" id="popupsMain">',
+      '<div class="popups-mask" id="popupsMask"></div>',
+      '<div class="popups-content ' + opt.className + '" id="popupsContent">',
+      '' + opt.content + '</div>',
+      '</div>'
+    ]
+    Sl('body').append(popupsHtml.join(''))
+
+    var SlpopupsMain = Sl("#popupsMain")
+    var SlpopupsMask = Sl("#popupsMask")
+    var SlpopupsContent = Sl("#popupsContent")
+
+    SlpopupsMask.css({
+      position: "fixed",
+      height: "100%",
+      width: "100%",
+      left: 0,
+      top: 0,
+      zIndex: 9998,
+    })
+
+    SlpopupsContent.css({
+      position: 'fixed',
+      width: opt.width,
+      height: opt.height,
+      right: 0,
+      left: 0,
+      zIndex: 9999,
+      margin: "auto",
+    })
+
+    SlpopupsContent.animate({
+      top: 0,
+      bottom: 0,
+    }, {
+      duration: 1000,
+      timingFn: "Bounce",
+      timingType: 1
+    })
+
+    if (opt.blankClose) {
+      Sl('.popups-mask').on('click.stop.prevent', function () {
+        Sl("body").remove(SlpopupsMain)
+      })
+    }
+
+    if (opt.autoClose && opt.autoTime > 0) {
+      setTimeout(function () {
+        Sl("body").remove($popupsMain)
+      }, opt.autoTime)
+    }
+  }
+
   Sl.prototype = {
     constructor: Sl,
     // eq便于恢复
@@ -606,7 +678,7 @@
       var em = ''
 
       if(type === 'string') {
-        if(!!val) {
+        if(!!val || typeof val === 'number') {
           if(/width|height|top|right|bottom|left/i.test(attr)) {
             !isNaN(val / 1) && (em = 'px')
           }
