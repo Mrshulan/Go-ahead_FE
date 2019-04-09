@@ -24,5 +24,33 @@ function Events () {
     }
   }
 
+  this.off = function (eventName, callback) {
+    if(this.handles[eventName]) {
+      var index = this.handles[eventName].findIndex(fn => Object.is(fn, callback))
+      if(index > -1) {
+        this.handles[eventName].splice(index, 1)
+      }
+    }
+  }
+
+  this.once = function (eventName, callback) {
+    var self = this
+
+    if(!this.handles) {
+      this.handles = {}
+    }
+    if(!this.handles[eventName]) {
+      this.handles[eventName] = []
+    }
+
+    function _f(obj) {
+      self.off(eventName, _f)
+      return callback.call(this, obj)
+    }
+
+    this.handles[eventName].push(_f)
+  }
+
+  
   return this
 }
