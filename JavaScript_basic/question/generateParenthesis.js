@@ -19,8 +19,11 @@ var generateParenthesis = function(n) {
     if(leftNum < total) {
       parenthes(curr + "[", result, leftNum + 1, rightNum);
     }
-    if(left > rightNum) {
+    if(leftNum > rightNum) {
       parenthes(curr + "]", result, leftNum, rightNum + 1);
     }
   }
 }
+
+// [ '[[[]]]', '[[][]]', '[[]][]', '[][[]]', '[][][]' ]
+console.log(generateParenthesis(3))
