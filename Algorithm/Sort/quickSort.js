@@ -21,7 +21,7 @@ function quickSort(arr) {
   }
 
   function partition(arr, left, right) {
-    let pivot = arr[Math.floor((left + left) / 2)]
+    let pivot = arr[Math.floor((left + right) / 2)]
 
     // = 号 是必须的 因为 left还可能会移动 [2, 3, 5, 1, 4] 第一次到 1 的时候
     while(left <= right) {
@@ -32,8 +32,8 @@ function quickSort(arr) {
       while(arr[right] > pivot) {
         right--
       }
-
-      if(left < right) {
+      // = 号 是必须的 [1, 1, 1]这种的不然陷入死循环
+      if(left <= right) {
         [arr[left], arr[right]] = [arr[right], arr[left]]
         left++
         right--
