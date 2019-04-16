@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>hoverTab</title>
+  <style>
+    ul,li,p{
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .container{
+      width:400px;
+      height:300px;
+      background-color:silver;
+      border:1px solid silver;
+    }
+    .container ul{
+      width:100%;
+      height:100%;
+      overflow:hidden;
+    }
+    /* 一个tab选项1/4 */
+    .container .item{
+      float:left;
+      width:25%;
+      height:100%;
+      background-color:white;
+    }
+    .container .item .title{
+      line-height:40px;
+      border:1px solid silver;
+      box-sizing:border-box;
+      text-align:center;
+      cursor:pointer;
+    }
+    /* 内容 1/4 * 4 也要注意到排版到container里边 毕竟不是position大法*/
+    .container .item .content{
+      width:400%;
+      height:100%;
+      background-color:yellow;
+    }
+    .ml1{
+      margin-left:-100%;
+    }
+    .ml2{
+      margin-left:-200%;
+    }
+    .ml3{
+      margin-left:-300%;
+    }
+    /* 默认和选中 */
+    .container .active{
+      position:relative;
+      z-index:1;
+    }
+    .container .item:hover{
+      position:relative;
+      z-index:1
+    }
+    .container .item:hover .title{
+      border-bottom:none;
+      background-color:yellow;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+      <ul>
+        <li class="item active">
+          <p class="title">Tab1</p>
+          <p class="content">只有鼠标在元素上面的时候才有效果，无法实现选中和默认显示某一个的效果(active的控制)</p>
+        </li>
+        <li class="item">
+          <p class="title">Tab2</p>
+          <p class="content ml1">content2</p>
+        </li>
+        <li class="item">
+          <p class="title">Tab3</p>
+          <p class="content ml2">content3</p>
+        </li>
+        <li class="item">
+          <p class="title">Tab4</p>
+          <p class="content ml3">content4</p>
+        </li>
+      </ul>
+    </div>
+</body>
+</html>

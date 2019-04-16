@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>target锚点tab</title>
+  <style>  
+    ul,li{
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    .container{
+      width:400px;
+      height:300px;
+      background-color:silver;
+    }
+    /* Tab选项栏 */
+    .tab-control{
+      width:100%;
+      height:20%;
+    }
+    .tab-control ul{
+      height:100%;
+    }
+    .tab-control li{
+      width:25%;
+      height:100%;
+      float:left;
+      border:1px solid silver;
+      box-sizing:border-box;
+      background-color:white;
+      cursor: pointer;
+    }
+    .tab-control li:hover{
+      background-color:#7b7474
+    }
+    .tab-control a{
+      display:inline-block;
+      width:100%;
+      height:100%;
+      line-height:100%;
+      text-align:center;
+      text-decoration: none;
+    }
+    .tab-control a::after{
+      content:"";
+      display:inline-block;
+      height:100%;
+      vertical-align:middle;
+    }
+    /* 选项内容 */
+    .tab-content{
+      position:relative;
+      width:100%;
+      height:80%;
+      overflow:hidden;
+    }
+    .tab-content .item{
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+    }
+    .tab-content .default{
+      z-index: 1;
+    }
+    /* 选择到锚点的对象 改变层级 */
+    .tab-content .item:target{
+      z-index:2;
+    }
+    #item1 {
+      background-color: red;
+    }
+    #item2 {
+      background-color: yellow;
+    }
+    #item3 {
+      background-color: blue;
+    }
+    #item4 {
+      background-color: green;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <div class="tab-control">
+      <ul>
+         <li><a href="#item1">Tab1</a></li>
+         <li><a href="#item2">Tab2</a></li>
+         <li><a href="#item3">Tab3</a></li>
+         <li><a href="#item4">Tab4</a></li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div id="item1" class="item default">因为锚点会将选中的元素自动滚动到页面最上面，每次切换位置都要移动，体验极差。</div>
+      <div id="item2" class="item">content2</div>
+      <div id="item3" class="item">content3</div>
+      <div id="item4" class="item">content4</div>
+    </div>
+ </div>
+</body>
+</html>
