@@ -1,5 +1,5 @@
 const BROWSERSLIST = [
-  'last 2 versions', // 免去最近两个版本的更新
+  'last 2 versions', // 更新到最近两个版本的更新
   'ie >= 10', // 一些版本限定
   'chrome >= 49',
   'safari >= 10',

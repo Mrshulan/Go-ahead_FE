@@ -7,12 +7,44 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const BROWSERSLIST = require('./postcss-browserslist')
 
-// hash一般用于filename chunkhash一般用于chunk contenthash一般用于提取css的时候结合ExtractTextWebpackPlugin
+/* 
+  工作流程 (加载 - 编译 - 输出)
+  1、读取配置文件，按命令 初始化 配置参数(图谱依赖)，创建 全局Compiler 对象；
+  2、调用插件的 apply 方法 挂载插件 监听，然后从入口文件开始执行编译；
+  3、按文件类型，调用相应的 Loader 对模块进行 编译，并在合适的时机点触发对应的事件，调用 Plugin 执行，最后再根据模块 依赖查找 到所依赖的模块，递归执行第三步；
+  4、将编译后的所有代码包装成一个个代码块 (Chuck)， 并按依赖和配置确定 输出内容。这个步骤，仍然可以通过 Plugin 进行文件的修改;
+  5、最后，根据 Output 把文件内容一一写入到指定的文件夹中，完成整个过程
+*/
+
+/* 
+  hash的使用
+  hash: 和整个项目的构建相关， 只要项目文件有任意修改，整个项目构建的hash值就会被修改
+  chunkhash: 和webpack打包的chunk有关 不同的entry，以及定义的splitchunks 会生成不同的chunkhash值
+  contenthash: 根据文件的内容来定义hash, 文件内容不变，则contenthash  适合css文件
+*/
+
+/* 
+  热更新的理解
+  Webpack compile 将js 编译成 Bundle
+  HMR server 将热更新的文件输出给HMR Runtime(跟随bundjs注入到Browser监听,达到效果)
+  Bundle server 提供文件在浏览器的访问
+  HMR Runtime会被注入掉浏览器，更新文件变化(此前都是基于Webpack Dev Server)
+*/
+
+/* 
+  plugins 基于事件发布订阅模式(事件流)  Compiler(主流程运作，全局一个) Compilation(单独的事件钩子机制)
+  用途：优化分类、提取精华(公共代码提取)、做压缩处理(js/css/html压缩)、输出指定的目录等
+*/
+
+/* 
+  loader (基于node require文件权利比较大) 链式调用(compose顺序 中间字符串结果传递) 可配合 Plugin 发挥更大的作用
+*/
+
 module.exports = {
-  mode: 'development',
+  mode: 'development', // production下默认会启用UglifyJsPlugin
   devtool: 'eval-source-map', // 生产模式一定要关闭，影响速度
   // devServer: {
   //   port: '3000',
@@ -39,13 +71,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'), // 文件最终输出路径
     filename: 'js/[name].js', // name代表的就是上边的键名 
     chunkFilename: 'js/[name].[chunkhash:8].js', // chunk块 会自动拆分模块，实现按需加载
-    // publicPath: '/_static_/' // 文件输出的公共路径
+    publicPath: './' // 文件输出的公共路径
   },
-  /* 
-  * plugins[] 用于优化
-  * 当loader下班了 要对loader干的事情进行
-  * 优化分类、提取精华(公共代码提取)、做压缩处理(js/css/html压缩)、输出指定的目录等
-  */
   plugins: [
     new CleanWebpackPlugin("./dist"),
     // new webpack.HotModuleReplacementPlugin(),
@@ -80,10 +107,10 @@ module.exports = {
     */
     new MiniCssExtractPlugin({
       filename:'css/[name].css',
-      chunkFilename: 'css/[id][chunkhash:8].css'
+      chunkFilename: 'css/[id].[contenthash:8].css'
     }),
     new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.optimize\.css$/g,
+      assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'), // css优化压缩 cssProcessor后面可以跟一个process方法，会返回一个promise对象
       cssProcessorPluginOptions: {
         preset: ['default', { discardComments: { removeAll: true } }],
@@ -94,14 +121,14 @@ module.exports = {
     // new BundleAnalyzerPlugin(),
     // 一定写在HtmlWebPackPlugin插件 且要最新的@next
     new PreloadWebpackPlugin({
-      rel: 'prefetch', // 自动在预加载的资源上添加 rel="preload"标签即可
-      as: 'script', // script、font、image、style、video等等，更多详细请查看API，它还可以返回function
+      rel: 'preload', // 自动在预的资源上添加 rel="preload" (区别 preload预加载  和 prefecth预读取)
+      as: 'script', // 最高优先级 script、font、image、style、video等等,它还可以返回function
        // as(entry) {
         //   if (/\.css$/.test(entry)) return 'style';
         //   return 'script';
         // },
-      include: 'asyncChunks', // 预加载文件 allChunks、initial、asyncChunks、数组等选项，数组即表示指定插入某些文件
-      fileBlacklist: [/\index.css|index.js|vendors.js/, /\.whatever/], // 黑名单
+      excludeHtmlNames: ['index.html'],
+      include: 'allChunks', // 预加载文件 allChunks、initial、asyncChunks、数组等选项，数组即表示指定插入某些文件
     })
   ],
   /* 
@@ -134,7 +161,7 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: '../' // 这是为配合css里边的url
+              publicPath: '../' // 这是为配合css里边的url (例如/dist/css/images/ ✖)
             }
           },
           'css-loader',
@@ -192,33 +219,20 @@ module.exports = {
         test: /\.(jpe?g|png|gif)$/,
         exclude: /node_modules/,
         use:[
-          {
-            loader: 'url-loader?limit=12&name=images/[name].[hash:8].[ext]'
+          { // 处理: 正常我们在写的时候都是以当前文件(dist)作为出发点 而当我们访问html时，在css处理里边做出路径调整
+            loader: 'url-loader?limit=3000&name=images/[name].[hash:8].[ext]',
           }
         ]
       },
       {
-        test: /\.(woff|woff2|ttf|eot|svg)$/,
+        test: /\.(woff|woff2|ttf|eot|otf|svg)$/,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'file-loader?name=fonts/[name].[hash:8].[ext]'
+            loader: 'file-loader?name=/assets/fonts/[name].[hash:8].[ext]',
           }
         ]
       },
-      {
-        test: /\.(html|htm)$/,
-        exclude: path.resolve(__dirname, './src/view'),
-        use: [
-          {
-            loader: 'html-loader',
-            options: {
-              publicPath: './',
-              attrs: ['img:src']
-            } // 在output里边的设置的publicPath会依据那个
-          }
-        ]
-      }
     ]
   },
   /* 
@@ -226,25 +240,29 @@ module.exports = {
   */
   optimization: {
     splitChunks: {
-      chunks: 'async', // 共有三个值可以选: initial(初始模块)、async(按需加载模块)、all(全部模块)
-      minSize: 30000, // 模块超过30k自动被抽离成公共模块
-      // maxSize: 0,
+      chunks: 'async',  // 必须三选一： "initial(import)" | "all"(推荐import import()) | "async(import())" (默认就是async)
+      minSize: 0, // 模块超过多少k自动被抽离成公共模块
       minChunks: 1,  // 模块被引用>=1次，便分割
-      maxAsyncRequests: 1, // 异步加载chunk的并发请求数 <=
-      maxInitialRequests: 1, // 一个入口并发加载的chunk数量 <=
+      maxAsyncRequests: 5, // 异步(按需)加载chunk的并发请求数 <=
+      maxInitialRequests: 3, // 一个入口并发加载的chunk数量 <=
       automaticNameDelimiter: '~',
-      name: true, // 默认由模块名+hash命名，名称相同时多个模块将合并为1个，可以设置为function
-      // cacheGroups: {
-      //   vendors: {
-      //     test: /[\\/]node_modules[\\/]/,
-      //     priority: -10
-      //   },
-      //   default: {
-      //     minChunks: 2,
-      //     priority: -20,
-      //     reuseExistingChunk: true
-      //   }
-      // }
+      name: true, // 默认由模块名~hash命名，名称相同时多个模块将合并为1个，可以设置为function
+      cacheGroups: {
+        vendors: {
+          chunks: 'initial',
+          enforce: true, // 使用cacheGroup配置不继承
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10 // 值越大越好
+        },
+        common: {
+          chunks: 'all',
+          minChunks: 2,
+          priority: -9,
+          name: 'common',
+          minSize: 0, // 模块超过多少k自动被抽离成公共模块
+          reuseExistingChunk: true // 可重用chunk
+        }
+      }
     },
     runtimeChunk: { // 会覆盖 入口指定的名称！！！
       // name: 'manifest', //固定 
