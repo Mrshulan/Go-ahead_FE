@@ -12,9 +12,9 @@
 - DesignPattern 设计模式
 - JavaScript_basic JS原生基础
 - util 微型函数库
-- webpack4_conf (还没有真正意义上测试过😂)
+- webpack4_conf Webpack配置
 - ...
 
-## 源码解析 (待定)
+## 源码解析 (即将ing)
 
 >  附上👆[Mrshulan's blog](http://mrshulan.com)  QQ: 1934179339
