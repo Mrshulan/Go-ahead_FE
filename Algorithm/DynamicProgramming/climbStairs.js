@@ -15,3 +15,22 @@ var climbStairs = function (n) {
 
   return n2
 }
+
+var climbStairs = function (n) {
+  let dp = []
+
+  if(n == 0) {
+      return 0
+  }
+  for(let i = 0;i <= n;i++){
+      if(i < 3){
+          dp.push(i)
+      } else {
+          dp.push(dp[dp.length-1]+dp[dp.length-2])
+      }
+  }
+
+  return dp[dp.length-1]
+}
+
+console.log(climbStairs(3))
