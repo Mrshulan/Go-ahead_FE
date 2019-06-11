@@ -5,6 +5,10 @@
  */
 // 如果把每一行都这么求出来 时间复杂度肯定爆表
 /* 
+第一行: 0
+第二行: 01
+第三行: 0110
+第四行: 01101001
 找出其中的与上一行的关系(递归自上而下)
 当 k 为偶数时，它的值 = n-1行的 k/2  == 0 ？ 1 ：0 
 当 k 为奇数时，它的值 = n-1行的 (k+1)/2 == 0 ?  0 : 1 
@@ -36,7 +40,25 @@ var kthGrammar = function (N, K) {
 // 1    1
 // 10   1
 // 11   0
-// parseInt(K - 1, 2) <= 这个肯定不行 javasript 似乎不行(没有转进制输出？)
+// parseInt(K - 1, 2) <= 这个肯定不行 javasript 似乎不行(没有转进制输出？) => toString大法
+var kthGrammar = function (N, K) {
+  
+  return hammingWeight(K - 1) % 2
+
+
+  function hammingWeight (n) {
+    let numArr = n.toString(2).split('')
+    let count = 0
+
+    for(let val of numArr) {
+      if(val === '1') {
+        count++
+      }
+    }
+
+    return count
+  };
+}
 
 console.log(kthGrammar(2, 2))
 console.log(kthGrammar(4, 5))
