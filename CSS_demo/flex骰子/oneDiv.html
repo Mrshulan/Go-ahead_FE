@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    /* 方案一: 利用box-shadow叠加 */
+    .demo{
+      background-color: black;
+      height: 300px;
+      width: 300px;
+      border-radius: 20px;
+      position: relative;
+      
+    }
+
+    .demo::after{
+      content: "";
+      position: absolute;
+      height: 85px;
+      width: 85px;
+      left: 50%;
+      top: 50%;
+      background-color: #FFF;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: -90px -90px 0 0 #FFF,90px -90px 0 0 #FFF,90px 90px 0 0 #FFF, -90px 90px 0 0 #FFF;
+    }
+
+    /* 方案一: 利用backgroud-size叠加 */
+    .demo{
+      position: relative;
+      width: 200px;
+      height: 200px;
+      background-image: radial-gradient(25px circle,#fff, #fff 25px, #000 26px);
+      background-size: 50% 50%;
+      border-radius: 10px;
+    } 
+    .demo:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 50px;
+      height: 50px;
+      background: #fff;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo"></div>
+</body>
+</html>
