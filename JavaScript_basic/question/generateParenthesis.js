@@ -14,7 +14,7 @@ var generateParenthesis = function(n) {
   function parenthes(curr,result,leftNum, rightNum) {
 
     if(leftNum == total && rightNum == total) {
-      result.push(curr)
+      return result.push(curr)
     }
     if(leftNum < total) {
       parenthes(curr + "[", result, leftNum + 1, rightNum);
