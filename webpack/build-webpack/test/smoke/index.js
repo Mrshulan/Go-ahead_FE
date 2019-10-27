@@ -7,8 +7,9 @@ const mocha = new Mocha({
   timeout: '10000ms'
 })
 
-
+console.log(process.cwd())
 process.chdir(path.join(__dirname, "template"))
+console.log(process.cwd())
 
 
 rimraf('./dist', () => {
