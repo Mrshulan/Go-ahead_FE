@@ -1,0 +1,22 @@
+{
+  "name": "zip-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jszip": "^3.2.2"
+  },
+  "devDependencies": {
+    "loader-utils": "^1.2.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "yazl": "^2.5.1"
+  }
+}
