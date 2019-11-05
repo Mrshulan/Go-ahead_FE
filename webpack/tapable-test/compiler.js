@@ -27,8 +27,10 @@ module.exports = class Compiler {
   }
 
   calculateRoutes() {
-    this.hooks.calculateRoutes.promise(...arguments).then(() => {
-
+    // .callAsync = .promise 执行tapPromise的第二个参数
+    // 在这里的then 参数带不过来？
+    this.hooks.calculateRoutes.promise(...arguments).then(function (result) {
+      console.log(result)
     }, (err) => {
       console.error(err)
     })

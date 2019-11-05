@@ -27,6 +27,7 @@ myCar.hooks.calculateRoutes.tapPromise("calculateRoutes tapPromise", (source, ta
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log(`tapPromise to ${source} ${target} ${routesList}`)
+      resolve()
     }, 1000)
   })
 })
