@@ -5,13 +5,13 @@ const path = require('path')
 module.exports = function (source) {
   const { name } = loaderUtils.getOptions(this)
 
-  const url = loaderUtils.interpolateName(this, "[name].[ext]", {
+  const url = loaderUtils.interpolateName(this, "[name]_[contentHash:4].[ext]", {
     content: source
   })
 
   console.log("url", url)
   console.log("name:", name)
-
+  // loader-runner并不支持 需要在context手动配置这个函数测试
   this.emitFile(path.join(__dirname, url), source)
 
 
@@ -31,8 +31,8 @@ module.exports = function (source) {
   //   callback(null, data)
   // })
 
-  throw new Error('A small error occurred')
+  // throw new Error('A small error occurred')
 
-  // return `export default ${json}`
-  this.callback(null, json, 2, 3, 4)
+  return `export default ${json}`
+  // this.callback(null, json, 2, 3, 4)
 }

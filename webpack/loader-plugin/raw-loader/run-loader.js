@@ -13,7 +13,7 @@ runLoaders({
     }
   ],
   context: {
-    emitFile: () => {}
+    emitFile: (output, content) => { console.log(output, content) }
   },
   readResource: fs.readFile.bind(fs)
 }, (err, result) => {
