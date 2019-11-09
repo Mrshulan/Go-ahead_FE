@@ -14,6 +14,7 @@
   "description": "",
   "devDependencies": {
     "@types/jest": "^24.0.22",
+    "@types/jquery": "^3.3.31",
     "@types/node": "^12.12.6",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
@@ -28,5 +29,9 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0",
     "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0"
   }
 }
